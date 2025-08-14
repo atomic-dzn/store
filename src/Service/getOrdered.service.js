@@ -19,7 +19,7 @@ class ordered_items {
             const values1 = [data.quantity, data.product_id];
             const result1 = await queryService.dbQuery(query1, values1);
 
-            const query2 = `UPDATE orders SET status = 'canceled' WHERE order_id = ?`;
+            const query2 = `UPDATE orders SET status = 'cancelled' WHERE order_id = ?`;
             const values2 = [data.order_id];
             const result2 = await queryService.dbQuery(query2, values2);
 
