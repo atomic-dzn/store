@@ -15,10 +15,13 @@ class ordered_items {
     }
     async cancel_order(data) {
         try {
-            const query1 = `UPDATE products SET quantity = quantity + ? WHERE product_id = ?`;
-            const values1 = [data.quantity, data.product_id];
-            const result1 = await queryService.dbQuery(query1, values1);
+            const findItem = `SELECT product_id, quantity FROM orders WHERE order_id = ?`;
+            const result1 = await queryService.dbQuery(findItem, [data.order_id]);
 
+            for (const item of result1) {
+                const updateProductQuery = `UPDATE products SET quantity = quantity + ? WHERE product_id = ?`;
+                await queryService.dbQuery(updateProductQuery, [item.quantity, item.product_id]);
+            }
             const query2 = `UPDATE orders SET status = 'cancelled' WHERE order_id = ?`;
             const values2 = [data.order_id];
             const result2 = await queryService.dbQuery(query2, values2);
